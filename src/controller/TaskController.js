@@ -25,8 +25,8 @@ export class TaskController {
 
     async findByProjectId(req, res, next) {
         try {
-            const { projectId } = req.params;
-            const result = await this.service.findByProjectId(projectId);
+            const { id } = req.params;
+            const result = await this.service.findByProjectId(id);
             return res.json(result);
         } catch (e) {
             next(e);

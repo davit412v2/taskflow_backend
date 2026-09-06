@@ -33,6 +33,7 @@ export class TasksRepository {
     }
 
     async findByProjectId(projectId) {
+        console.log(`==id ${projectId}`);
         try {
             const result = await this.pool.query(`
             SELECT * 
@@ -110,7 +111,7 @@ export class TasksRepository {
                 id
             ]);
 
-            return result.rowCount > 0;
+            return true;
         }
         catch (e) {
             return false;
