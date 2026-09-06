@@ -1,3 +1,4 @@
+import { AppError } from "../errors/AppError.js";
 export class TaskService {
 
     constructor(repository, projectRepository) {
@@ -6,87 +7,71 @@ export class TaskService {
     }
 
     async findAll() {
-        try {
-            return await this.repository.findAll();
-        } catch (e) {
-            throw new Error();
+        const result = await this.repository.findAll();
+        if (!result) {
+            throw new AppError("No tasks were found.", 404);
         }
+        return result;
     }
 
     async findById(id) {
-        try {
-            if (!isNaN(id)) {
-                return await this.repository.findById(id);
-            } else {
-                throw new Error();
-            }
-        } catch (e) {
-            throw new Error();
+        const result = await this.repository.findById(id);
+        if (!result) {
+            throw new AppError("Task not found", 404);
         }
+        return result;
     }
 
     async findByProjectId(id) {
-        try {
-            if (!isNaN(id)) {
-                let isExistProject = await this.validProject(id);
-                if (isExistProject) {
-                    return await this.repository.findByProjectId(id)
-                } else {
-                    throw new Error("");
-                }
-            } else {
-                throw new Error("");
+        let isProjectReady = await this.validProject(id);
+        if (isProjectReady) {
+            const result = await this.repository.findByProjectId(id)
+            if (!result) {
+                throw new AppError("Task not found");
             }
-
-        } catch (e) {
-            throw new Error();
+            return result;
+        } else {
+            throw new AppError("The project does not exist", 404);
         }
 
     }
 
     async create(task) {
-        try {
-            const result = await this.repository.create(task);
-            return !!result;
-        } catch (e) {
-            throw new Error();
+        const result = await this.repository.create(task);
+        if (!result) {
+            throw new AppError("The task was not created", 404);
         }
-
+        return result;
     }
 
     async update(id, task) {
-        try {
-            const isValid = await this.findById(id);
-            if (!!isValid) {
-                const result = await this.repository.update(id, task);
-                return !!result;
-            } else {
-                throw new Error("");
+        const isValid = await this.findById(id);
+        if (!!isValid) {
+            const result = await this.repository.update(id, task);
+            if (!result) {
+                throw new AppError("The task was not updated", 404);
             }
-        } catch (e) {
-            throw new Error();
+            return result;
+        } else {
+            throw new AppError("Task not found", 404);
         }
-
     }
 
     async delete(id) {
-        try {
-            const isValid = this.findById(id);
-            if (!!isValid) {
-                return this.repository.delete(id);
+        const isValid = this.findById(id);
+        if (!!isValid) {
+            const result = await this.repository.delete(id);
+            if (!result) {
+                throw new AppError("The task was not delete", 404);
             }
-        } catch (e) {
-            throw new Error();
+            return result;
+        } else {
+            throw new AppError("Task not found", 404);
         }
-
     }
 
     async validProject(id) {
-        try {
-            const result = this.projectRepository.findById(id);
-            return !!result;
-        } catch (e) {
-            return false;
-        }
+        const result = this.projectRepository.findById(id);
+        return !!result;
     }
 }
