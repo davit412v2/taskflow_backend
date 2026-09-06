@@ -27,7 +27,7 @@ export class TaskService {
         if (isProjectReady) {
             const result = await this.repository.findByProjectId(id)
             if (!result) {
-                throw new AppError("Task not found");
+                throw new AppError("Tasks not found");
             }
             return result;
         } else {
@@ -49,7 +49,7 @@ export class TaskService {
         if (!!isValid) {
             const result = await this.repository.update(id, task);
             if (!result) {
-                throw new AppError("The task was not updated", 404);
+                throw new AppError("The task was not update", 404);
             }
             return result;
         } else {
