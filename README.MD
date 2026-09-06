@@ -164,6 +164,6 @@ DELETE /tasks/:id
 
 **Luis David Barriga Garay**
 
-Software Engineer | Full Stack Developer | Flutter | Node.js | Inteligencia Artificial
+Software Engineer | Full Stack Developer | Flutter | React | Node.js | Inteligencia Artificial
 
 ---
