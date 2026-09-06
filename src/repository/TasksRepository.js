@@ -75,30 +75,24 @@ export class TasksRepository {
     }
 
     async update(id, task) {
+        const fields = Object.keys(task);
+        const values = Object.values(task);
 
-        try {
-            const result = await this.pool.query(`
-            UPDATE tasks
-            SET title = $1,
-            description = $2,
-            status = $3,
-            priority = $4
-            WHERE id = $5
-            RETURNING *;
-            `, [
-                task.title,
-                task.description,
-                task.status,
-                task.priority,
-                id
-            ]);
+        const set = fields
+            .map((field, index) => `${field} = $${index + 1}`)
+            .join(", ");
 
-            return result.rows[0];
-        }
-        catch (e) {
-            throw new Error("Error Update task");
-        }
+        values.push(id);
 
+        const result = await this.pool.query(
+            `UPDATE tasks
+         SET ${set}
+         WHERE id = $${values.length}
+         RETURNING *`,
+            values
+        );
+
+        return result.rows[0];
     }
 
     async delete(id) {

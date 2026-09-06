@@ -49,7 +49,7 @@ export class TaskService {
         if (!!isValid) {
             const result = await this.repository.update(id, task);
             if (!result) {
-                throw new AppError("The task was not update", 404);
+                throw new AppError("The task was not update", 400);
             }
             return result;
         } else {

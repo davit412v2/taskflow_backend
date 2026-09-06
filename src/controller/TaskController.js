@@ -53,14 +53,18 @@ export class TaskController {
     async update(req, res, next) {
         try {
             const { id } = req.params;
+
             const { title, description, status, priority } = req.body;
+
             const task = {
-                title: title,
-                description: description,
-                status: status,
-                priority: priority
-            }
+                ...(title !== undefined && { title }),
+                ...(description !== undefined && { description }),
+                ...(status !== undefined && { status }),
+                ...(priority !== undefined && { priority })
+            };
+
             const result = await this.service.update(id, task);
+
             return res.json(result);
         } catch (e) {
             next(e);
