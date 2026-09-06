@@ -70,7 +70,7 @@ export class TasksRepository {
             return result.rows[0];
         }
         catch (e) {
-            throw new Error("Error created task");
+            throw new Error(`Error created task ${e}`);
         }
     }
 

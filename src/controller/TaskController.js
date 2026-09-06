@@ -35,8 +35,9 @@ export class TaskController {
 
     async create(req, res, next) {
         try {
-            const { title, description, status, priority } = req.body;
+            const { projectId, title, description, status, priority } = req.body;
             const task = {
+                projectId: projectId,
                 title: title,
                 description: description,
                 status: status,

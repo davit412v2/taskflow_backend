@@ -8,7 +8,7 @@ export class ProjectService {
     async findAll() {
         const result = await this.repository.findAll();
         if (!result) {
-            throw new AppError("No tasks were found",)
+            throw new AppError("No project were found", 404);
         }
         return result;
     }
@@ -34,7 +34,7 @@ export class ProjectService {
         if (!!isValid) {
             const result = await this.repository.update(id, project);
             if (!result) {
-                throw new AppError("The project was not updated", 404);
+                throw new AppError("The project was not update", 404);
             }
             return result;
         } else {
@@ -47,7 +47,7 @@ export class ProjectService {
         if (!!isValid) {
             const result = await this.repository.delete(id);
             if (!result) {
-                throw new AppError("The task was not delete", 404);
+                throw new AppError("The project was not delete", 404);
             }
             return result;
         } else {
